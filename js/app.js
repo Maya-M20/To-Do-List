@@ -10,6 +10,9 @@ const title = document.createElement('h1');
 title.textContent = 'My To-Do List';
 
 const form = document.createElement('form');
+const label1 = document.createElement('label');
+label1.textContent = 'Task name';
+
 const input1 = document.createElement('input');
 input1.type = 'text';
 input1.name = 'taskname';
@@ -17,7 +20,9 @@ input1.placeholder = 'Task name';
 
 const input2 = document.createElement('input');
 input2.type = 'date';
-input2.name = 'date';
+input2.name = 'date';   
+const label2 = document.createElement('label');
+label2.textContent = 'Due date';
 
 const button = document.createElement('button');
 button.type = 'submit';
@@ -25,6 +30,8 @@ button.textContent = 'Create task';
 
 form.appendChild(input1);
 form.appendChild(input2);
+form.appendChild(label1);
+form.appendChild(label2);
 form.appendChild(button);
 
 const taskList = document.createElement('ul');
