@@ -66,7 +66,16 @@ function renderTasks() {
         taskDate.textContent = task.date;
         taskDate.dateTime = task.date;
 
-        taskItem.append(taskTitle, taskDate);
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.type = 'button';
+
+        deleteButton.addEventListener('click', function() {
+            deleteTask(task.id);
+            renderTasks();
+        });
+
+        taskItem.append(taskTitle, taskDate, deleteButton);
         taskList.append(taskItem);
     });
 };
@@ -85,3 +94,11 @@ form.addEventListener('submit', function(event) {
 
     form.reset();
 });
+
+
+function deleteTask(taskId){
+    const index = tasks.findIndex(function(task) {
+        return task.id === taskId;
+    });
+    tasks.splice(index, 1)
+}
