@@ -48,6 +48,22 @@ function addTask(title, date){
         date: date,
         completed: false
     };
-    
+
     tasks.push(task);
 };
+
+function renderTasks() {
+    taskList.replaceChildren();
+
+    tasks.forEach(function(task) {
+        const taskItem = document.createElement('li');
+        taskItem.class = 'task';
+
+        const taskTitle = document.createElement('span');
+        taskTitle.textContent = task.title;
+
+        const taskDate = document.createElement('date');
+        taskDate.textContent = task.date;
+        taskDate.dateTime = task.date;
+    });
+}
