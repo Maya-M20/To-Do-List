@@ -57,13 +57,31 @@ function renderTasks() {
 
     tasks.forEach(function(task) {
         const taskItem = document.createElement('li');
-        taskItem.class = 'task';
+        taskItem.className = 'task';
 
         const taskTitle = document.createElement('span');
         taskTitle.textContent = task.title;
 
-        const taskDate = document.createElement('date');
+        const taskDate = document.createElement('time');
         taskDate.textContent = task.date;
         taskDate.dateTime = task.date;
+
+        taskItem.append(taskTitle, taskDate);
+        taskList.append(taskItem);
     });
-}
+};
+
+form.addEventListener('submit', function(event) {
+    event.preventDefault();
+    const title = input1.value.trim();
+    const date = input2.value;
+
+    if (title === '' || date === '') {
+        return;
+    }
+
+    addTask(title, date);
+    renderTasks();
+
+    form.reset();
+});
