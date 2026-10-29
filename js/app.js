@@ -39,3 +39,15 @@ taskList.className = 'task-list';
 
 app.append(title, taskList, form);
 document.body.append(app);
+
+let tasks = [];
+function addTask(title, date){
+    const task = {
+        id: Date.now(),
+        title: title,
+        date: date,
+        completed: false
+    };
+    
+    tasks.push(task);
+};
