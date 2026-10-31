@@ -10,6 +10,7 @@ const title = document.createElement('h1');
 title.textContent = 'My To-Do List';
 
 const form = document.createElement('form');
+form.className = 'task-form';
 const label1 = document.createElement('label');
 label1.textContent = 'Task name';
 
@@ -29,8 +30,8 @@ button.type = 'submit';
 button.textContent = 'Create task';
 
 form.appendChild(label1);
-form.appendChild(label2);
 form.appendChild(input1);
+form.appendChild(label2);
 form.appendChild(input2);
 form.appendChild(button);
 
@@ -84,7 +85,7 @@ function renderTasks() {
             modalBackground.classList.add('modalBackground');
 
             const editForm = document.createElement('form');
-            editForm.classList.add('form');
+            editForm.classList.add('editForm');
 
             const modalTitle = document.createElement('h2');
             modalTitle.classList.add('modalTitle');
