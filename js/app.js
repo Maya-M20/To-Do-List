@@ -60,6 +60,14 @@ function renderTasks() {
         const taskItem = document.createElement('li');
         taskItem.className = 'task';
 
+        if (task.completed) {
+            taskItem.style.border = '2px solid #48cf73';
+            taskItem.style.opacity = '0.7'; 
+        } else {
+            taskItem.style.border = '2px solid #ccc'; 
+            taskItem.style.opacity = '1';
+        }
+
         const taskTitle = document.createElement('span');
         taskTitle.textContent = task.title;
 
@@ -161,7 +169,25 @@ function renderTasks() {
             document.body.appendChild(modalBackground);
         });
 
-        taskItem.append(taskTitle, taskDate, deleteButton, editButton);
+        const taskStatusButton = document.createElement('button');
+        taskStatusButton.type = 'button';
+
+        if (task.completed) {
+            taskStatusButton.textContent = 'Undone';
+            taskStatusButton.addEventListener('click', function() {
+                undoTask(task.id);
+                renderTasks();     
+            });
+        } 
+        else {
+            taskStatusButton.textContent = 'Done';
+            taskStatusButton.addEventListener('click', function() {
+                doTask(task.id);   
+
+                renderTasks();     
+            });
+        }
+        taskItem.append(taskTitle, taskDate, deleteButton, editButton, taskStatusButton);
         taskList.append(taskItem);
     });
 };
@@ -198,4 +224,22 @@ function editTask(taskId, newName, newDate) {
     
     task.title = newName
     task.date = newDate;
+}
+
+function doTask(taskId) {
+    const index = tasks.findIndex(function(task) {
+        return task.id === taskId;
+    });
+
+    const task = tasks[index];
+    task.completed = true;
+}
+
+function undoTask(taskId) {
+        const index = tasks.findIndex(function(task) {
+        return task.id === taskId;
+    });
+
+    const task = tasks[index];
+    task.completed = false;
 }
