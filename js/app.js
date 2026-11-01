@@ -56,6 +56,12 @@ function addTask(title, date){
 function renderTasks() {
     taskList.replaceChildren();
 
+    tasks.sort(function(a, b) {
+        if (a.date < b.date) return -1;
+        if (a.date > b.date) return 1;
+        return 0;
+    });
+
     tasks.forEach(function(task) {
         const taskItem = document.createElement('li');
         taskItem.className = 'task';
