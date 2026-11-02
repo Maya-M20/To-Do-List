@@ -38,6 +38,18 @@ form.appendChild(button);
 const taskList = document.createElement('ul');
 taskList.className = 'task-list';
 
+const searchInput = document.createElement('input');
+searchInput.type = 'text';
+searchInput.placeholder = 'Search tasks...';
+searchInput.name = 'search';
+
+let searchQuery = '';
+
+searchInput.addEventListener('input', function() {
+    searchQuery = searchInput.value.toLowerCase().trim();
+    renderTasks();
+});
+
 let currentFilter = 'all';
 
 const allTaskButton = document.createElement('button');
@@ -68,7 +80,7 @@ uncompletedTasksButton.addEventListener('click', function() {
 });
 
 
-app.append(title, taskList, form, allTaskButton, completedTasksButton, uncompletedTasksButton);
+app.append(title, form, searchInput, allTaskButton, completedTasksButton, uncompletedTasksButton, taskList);
 document.body.append(app);
 
 let tasks = [];
@@ -105,6 +117,10 @@ function renderTasks() {
             return task.completed === false;
         });
     }
+
+    filteredTasks = filteredTasks.filter(function(task) {
+        return task.title.toLowerCase().includes(searchQuery);
+    });
 
     filteredTasks.forEach(function(task) {
         const taskItem = document.createElement('li');
