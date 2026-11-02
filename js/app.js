@@ -38,7 +38,37 @@ form.appendChild(button);
 const taskList = document.createElement('ul');
 taskList.className = 'task-list';
 
-app.append(title, taskList, form);
+let currentFilter = 'all';
+
+const allTaskButton = document.createElement('button');
+allTaskButton.textContent = 'All tasks';
+allTaskButton.type = 'button';
+
+const completedTasksButton = document.createElement('button');
+completedTasksButton.textContent = 'Completed tasks';
+completedTasksButton.type = 'button';
+
+const uncompletedTasksButton = document.createElement('button');
+uncompletedTasksButton.textContent = 'Uncompleted tasks';
+uncompletedTasksButton.type = 'button';
+
+allTaskButton.addEventListener('click', function() {
+    currentFilter = 'all';
+    renderTasks();
+});
+
+completedTasksButton.addEventListener('click', function() {
+    currentFilter = 'completed';
+    renderTasks();
+});
+
+uncompletedTasksButton.addEventListener('click', function() {
+    currentFilter = 'uncompleted';
+    renderTasks();
+});
+
+
+app.append(title, taskList, form, allTaskButton, completedTasksButton, uncompletedTasksButton);
 document.body.append(app);
 
 let tasks = [];
@@ -62,7 +92,21 @@ function renderTasks() {
         return 0;
     });
 
-    tasks.forEach(function(task) {
+    let filteredTasks = tasks;
+
+    if (currentFilter === 'completed') {
+        filteredTasks = tasks.filter(function(task) {
+            return task.completed === true;
+        });
+    }
+
+    if (currentFilter === 'uncompleted') {
+        filteredTasks = tasks.filter(function(task) {
+            return task.completed === false;
+        });
+    }
+
+    filteredTasks.forEach(function(task) {
         const taskItem = document.createElement('li');
         taskItem.className = 'task';
 
