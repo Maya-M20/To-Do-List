@@ -12,6 +12,13 @@ body {
     font-family: Arial, sans-serif;
 }
 
+button {
+    margin: 5px;
+    font: inherit;
+    cursor: pointer;
+    border-radius: 4px
+}
+
 .task-form {
     display: flex;
     flex-direction: column;
