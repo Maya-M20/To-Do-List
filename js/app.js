@@ -83,7 +83,12 @@ uncompletedTasksButton.addEventListener('click', function() {
 app.append(title, form, searchInput, allTaskButton, completedTasksButton, uncompletedTasksButton, taskList);
 document.body.append(app);
 
+function saveToLocalStorage() {
+    localStorage.setItem('savedTasks', JSON.stringify(tasks));
+}
+
 let tasks = [];
+
 function addTask(title, date){
     const task = {
         id: Date.now(),
@@ -93,7 +98,9 @@ function addTask(title, date){
     };
 
     tasks.push(task);
+    saveToLocalStorage();
 };
+
 
 function renderTasks() {
     taskList.replaceChildren();
@@ -279,6 +286,7 @@ function deleteTask(taskId){
         return task.id === taskId;
     });
     tasks.splice(index, 1)
+    saveToLocalStorage();
 }
 
 function editTask(taskId, newName, newDate) {
@@ -290,6 +298,7 @@ function editTask(taskId, newName, newDate) {
     
     task.title = newName
     task.date = newDate;
+    saveToLocalStorage();
 }
 
 function doTask(taskId) {
@@ -299,6 +308,7 @@ function doTask(taskId) {
 
     const task = tasks[index];
     task.completed = true;
+    saveToLocalStorage();
 }
 
 function undoTask(taskId) {
@@ -308,4 +318,15 @@ function undoTask(taskId) {
 
     const task = tasks[index];
     task.completed = false;
+    saveToLocalStorage();
 }
+
+const rawData = localStorage.getItem('savedTasks');
+
+if (rawData) {
+    tasks = JSON.parse(rawData);
+} else {
+    tasks = [];
+}
+
+renderTasks();
