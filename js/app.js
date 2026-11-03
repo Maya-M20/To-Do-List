@@ -79,8 +79,44 @@ uncompletedTasksButton.addEventListener('click', function() {
     renderTasks();
 });
 
+const sortButton = document.createElement('button');
+sortButton.type = 'button';
+sortButton.textContent = 'Sort by date';
 
-app.append(title, form, searchInput, allTaskButton, completedTasksButton, uncompletedTasksButton, taskList);
+function sortTasksByDate() {
+    tasks.sort(function(a, b) {
+        if (a.date < b.date) return -1;
+        if (a.date > b.date) return 1;
+        return 0;
+    });
+
+    renderTasks();
+}
+
+sortButton.addEventListener('click', function() {
+    sortTasksByDate();
+});
+
+const dragButton = document.createElement('button');
+dragButton.type = 'button';
+dragButton.textContent = 'Enable drag-and-drop';
+
+let dragMode = false;
+
+dragButton.addEventListener('click', function() {
+    dragMode = !dragMode;
+
+    if (dragMode) {
+        dragButton.textContent = 'Disable drag-and-drop';
+    } else {
+        dragButton.textContent = 'Enable drag-and-drop';
+    }
+
+    renderTasks();
+});
+
+
+app.append(title, form, searchInput, sortButton, allTaskButton, completedTasksButton, uncompletedTasksButton, taskList, dragButton);
 document.body.append(app);
 
 function saveToLocalStorage() {
@@ -101,15 +137,10 @@ function addTask(title, date){
     saveToLocalStorage();
 };
 
+let draggedTaskId = null;
 
 function renderTasks() {
     taskList.replaceChildren();
-
-    tasks.sort(function(a, b) {
-        if (a.date < b.date) return -1;
-        if (a.date > b.date) return 1;
-        return 0;
-    });
 
     let filteredTasks = tasks;
 
@@ -132,6 +163,39 @@ function renderTasks() {
     filteredTasks.forEach(function(task) {
         const taskItem = document.createElement('li');
         taskItem.className = 'task';
+        taskItem.draggable = dragMode;
+
+        taskItem.addEventListener('dragstart', function() {
+            draggedTaskId = task.id;
+        });
+
+        taskItem.addEventListener('dragover', function(event) {
+            event.preventDefault();
+        });
+
+        taskItem.addEventListener('drop', function(event) {
+            event.preventDefault();
+
+            if (draggedTaskId === null || draggedTaskId === task.id) {
+                return;
+            }
+
+            const draggedIndex = tasks.findIndex(function(task) {
+                return task.id === draggedTaskId;
+            });
+
+            const targetIndex = tasks.findIndex(function(item) {
+                return item.id === task.id;
+            });
+
+            const draggedTask = tasks.splice(draggedIndex, 1)[0];
+
+            tasks.splice(targetIndex, 0, draggedTask);
+
+            draggedTaskId = null;
+
+            renderTasks();
+        });
 
         if (task.completed) {
             taskItem.style.border = '2px solid #48cf73';

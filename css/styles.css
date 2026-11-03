@@ -16,7 +16,7 @@ button {
     margin: 5px;
     font: inherit;
     cursor: pointer;
-    border-radius: 4px
+    border-radius: 2px
 }
 
 .task-form {
@@ -82,3 +82,10 @@ button {
     box-sizing: border-box; 
 }
 
+.task[draggable="true"] {
+    cursor: grab;
+}
+
+.task[draggable="true"]:active {
+    cursor: grabbing;
+}
